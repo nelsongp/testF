@@ -28,6 +28,7 @@ func DecodeRequestShowInfoRed(ctx context.Context, r *http.Request) (interface{}
 
 func EncodeShowInfoRed(ctx context.Context, w http.ResponseWriter, response interface{}) error {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	resp, _ := response.(ShowInfoResponse)
 	if resp.Err != nil {
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")

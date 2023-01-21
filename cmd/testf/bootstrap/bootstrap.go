@@ -10,6 +10,7 @@ import (
 	"github.com/nelsongp/testF/internal/botinfo/process"
 	"github.com/nelsongp/testF/internal/getInfoNodeRed/getInfoNode"
 	handlerShowNode "github.com/nelsongp/testF/internal/getInfoNodeRed/platform/handler"
+	"github.com/nelsongp/testF/internal/getInfoNodeRed/platform/storage/mysql"
 	"github.com/nelsongp/testF/internal/testEndpoint/getTestEndpoint"
 	"github.com/nelsongp/testF/internal/testEndpoint/platform/handler"
 	mysql2 "github.com/nelsongp/testF/internal/updateRegisters/platform/storage/mysql"
@@ -39,7 +40,8 @@ func Run() {
 	///end get test endpoint
 
 	//showNodeRedInfo endpoint
-	showNodeRedSvc := getInfoNode.NewShowInfoNodeRedService(kitlogger)
+	getRepo := mysql.NewNodeRedRepo(db, kitlogger)
+	showNodeRedSvc := getInfoNode.NewShowInfoNodeRedService(kitlogger, getRepo)
 	showNodeRedSub := handlerShowNode.MakeRetrieveNodeRedInfo(showNodeRedSvc)
 	showNodeRedSub = handlerShowNode.ShowInfoNodeRedTransportMiddleware(kitlogger)(showNodeRedSub)
 	showNodeRedHandler := handlerShowNode.NewHttpShowNodeRedInfoHandler("/showNodeRed", showNodeRedSub)
